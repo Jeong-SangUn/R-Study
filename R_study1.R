@@ -159,7 +159,7 @@ mat['r2','c2']
 mat[,-1]
 mat[-1,]
 
-li <- list(name = c('GilDong','SeDol','GilDong'),
+list(name = c('GilDong','SeDol','GilDong'),
            age = c(30,35),
            job = c('SalesManager','GoPro'))
 li['age']
@@ -190,7 +190,7 @@ df$new <- c('a','b','c','d','e','f','g','h','a','b')
 df
 str(df$new)
 str(df[,6])
-getwd()
+?getwd()
 setwd(getwd()+'/data')
 student <- read.table(file='./data/student.txt', sep="")
 student
@@ -279,7 +279,7 @@ GDP_TOP20
 Nations <- reorder(GDP_TOP20$Country,-GDP_TOP20$Dollar)
 Nations
 
-ggplot(GDP_TOP20,aes(x=Nations,y=Dollar/1000))+
+ggplot(GDP_TOP20,aes(x=Nations,y=Dollar/1000,fill=Nations))+
   geom_bar(stat='identity')+
   theme(axis.text.x = element_text(angle=90),
         plot.title=element_text(color='blue', size=12, face='bold.italic',
