@@ -285,3 +285,4 @@ ggplot(GDP_TOP20,aes(x=Nations,y=Dollar/1000,fill=Nations))+
         plot.title=element_text(color='blue', size=12, face='bold.italic',
                                 hjust=0.5))+
   labs(title = '2018년 국가별 GDP 순위', x= 'NATIONS', y= 'GDP($Billons)')
+

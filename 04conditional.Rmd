@@ -1,0 +1,600 @@
+---
+title: "conditional"
+author: "Hong"
+date: '2019 5 4 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval=FALSE, echo=TRUE, cache=TRUE, comment="")
+```
+
+## 제어문
+
+#### 1. 조건문
+
+  + cf) 출력 함수 : print(), cat()
+
+print() | cat()
+-------|--------
+변수의 값만 출력 가능 | 텍스트를 삽입해서 출력 가능
+하나의 변수만 출력 | 여러 변수 출력 가능
+
+```{r}
+# print(), cat()
+print_test <- c(1,5,7)
+print_test1 <- c(2,4,6)
+print(print_test)
+print(print_test, print_test1)
+
+cat(print_test,print_test1)
+cat("첫번째는 홀수=",print_test,"두번째는 짝수=",print_test1)
+
+cat(print_test,"\n",print_test1)
+cat("첫번째는 홀수=",print_test,"\n","두번째는 짝수=",print_test1)
+
+
+```
+
+###### 1-1. if()
+
+  + 형식 : if( 조건식) { 참인 경우 처리문}
+           else {거짓인 경우 처리문}
+
+```{r}
+# 1) if()함수
+x <- 10
+y <- 5
+z <- x * y
+z
+
+if(x*y > 40){ # 산술 > 관계 > 논리 
+  cat("x*y의 결과는 40 이상입니다.\n")  # \n 줄바꿈
+  cat("x*y =", z, '\n')
+  print(z)
+}else{
+  cat("x*y의 결과는 40 미만입니다. x*y =", z,"\n")
+}
+```
+
+  + cf) scan()
+
+```{r}
+# 학점 구하기
+score # 85
+score <- 85
+score <- scan()
+result <- "low"
+if (score >= 80){
+  result <- "excellent"
+  print(result)
+}
+result
+cat("your score is",score, ", which is",result)
+
+
+```
+
+  + if ~ else if
+
+```{r}
+# score <- scan()
+# score
+score <- 90
+
+score <- scan()
+if(score >= 90){  # 조건식1
+  result="A학점"  # 조건식1 참
+}else if(score >=80){ # 조건식2
+  result="B학점"  # 조건식1 거짓, 조건식2 참 
+}else if(score >=70){
+  result="C학점"
+}else if(score >=60){
+  result="D학점"
+}else{
+  result="F학점"
+}
+cat("당신의 학점은 ",result)  # 당신의 학점은  B학점
+print(result)
+```
+
+  + ifelse(조건식, 참인 경우 처리문, 거짓인 경우 처리문)
+  
+```{r}
+# score <- scan()
+# score
+score <- 95
+ifelse(score >= 80, "great", "low")
+```
+
+###### 1-2 switch()
+
+  + 비교 문장의 내용에 따라서 여러개의 실행 문장 중 하나를 선택할 수 있는 코딩을 작성할 수 있다
+  + 형식 : switch(비교문, 실행문1, 실행문2,...)
+  + 예:
+
+```{r}
+switch("name", id="hong", pwd="1234",age=105, name="홍길동")
+```
+
+###### 1-3 which()
+
+  + 벡터 객체를 대상으로 특정데이터를 검색하는데 사용
+  + 조건식을 만족하는 경우 해당 벡터 원소의 인덱스를 반환
+  + 데이터 프레임에서 사용
+
+```{r}
+# 데이터 프레임 생성
+no <- c(1:6)
+name <-c("홍길동","이순신","강감찬","유관순","김유신","고길동")
+score <- c(85,78,89,90,74,89)
+exam <- data.frame(학번=no,이름=name,성적=score)
+exam
+
+exam$이름=="유관순"
+
+# 조건을 만족하는 --> 이름이 유관순인 사람의인덱스를 알고 싶다
+which(exam$이름=="유관순")
+which(exam$성적==89)
+
+# 인데스 4의 전체 데이터 보고 싶다
+exam[4,]
+
+# 성적이 89점인 사람의 인덱스 및 이름은?
+exam[which(exam$성적==89),] 
+exam[exam$이름=="유관순",]
+```
+
+#### 2. 반복문
+
+###### 2-1. for()
+
+  + 형식 : for(변수 in 변수){실행문}
+  
+```{r}
+# 1) 반복문 - for(변수 in 값) {표현식} 
+i <- c(1:10)
+i #  1  2  3  4  5  6  7  8  9 10
+
+d <- c() # 빈 vector(숫자)
+for(n in i){ # 10회 반복
+  print(n * 10) # 계산식(numeric만 가능) 출력
+  print(n)
+  d[n] <- n * 2 # d[1] = 2, ..... d[10]=20
+}
+d # 2  4  6  8 10 12 14 16 18 20
+```
+
+  + 실습 : 1~30까지 짝수값만 출력하는 반복문(1~30까지)
+  
+```{r}
+k <- 1:30
+for(n in k){
+  if(n%%2 != 1){
+   print(n) # %% : 나머지값 - 짝수만 출력 
+  }
+}
+
+0 != 1
+1 != 1
+```
+
+  + 1-20까지에서 짝수이면 넘기고(아무것도 하지 않고), 홀수이면 *3 해서 출력
+  
+```{r}
+j <- 1:20
+for(n in j){
+  if(n %% 2 == 0){
+    next
+  } else {
+    print(n*3)
+  }
+}
+```
+
+```{r}
+j <- 1:20
+aa <- numeric()
+for(n in j){
+  if(n %% 2 == 0){
+    next
+  } else {
+    aa <- n*3
+  }
+    print(aa) 
+}
+```
+
+```{r}
+j <- 1:20
+aa <- numeric()
+for(n in j){
+  if(n %% 2 == 0){
+    next
+  } else {
+    aa <- n*3
+    cat("n =",n,"n*3 =",aa,"\n")
+  }
+
+}
+```
+
+  + 벡터를 인덱스로 사용 : 벡터데이터의 사용
+  + score = c(85,95,98), name = c('홍길동','이순신','강감찬') 일 때, 다음의 형태로 출력해 보세요
+  
+    홍길동 -> 85
+    이순신 -> 95
+    강감찬 -> 98
+
+```{r}
+score <- c(85, 95, 98)
+name <- c('홍길동', '이순신', '강감찬')
+ 
+i <- 1         # 첨자로 사용되는 변수
+for (s in score) {
+  cat(name[i], " -> ", s, "\n")
+   i <- i + 1   
+}
+
+         # 첨자로 사용되는 변수
+for (o in 1:length(score)) {
+  cat(name[o], " -> ", score[o], "\n")
+}
+
+```
+
+```{r}
+score <- c(85, 95, 98, 99)
+name <- c('홍길동', '이순신', '강감찬', '류현진')
+ 
+i <- 1         # 첨자로 사용되는 변수
+for (s in score) {
+  if(i<=3){
+    cat(name[i], " -> ", s, "\n")
+   i <- i + 1}
+  else {print("해당 벡터가 없습니다")}
+}
+```
+
+###### 2-2. while()
+
+  + 기본적으로 for()와 동일
+  + 다만, while은 for와 달리 직접 반복 회수를 결정하지 않고 블록내에서 증감식을 이용해 종료시점이 지정
+  + 형식 : while(조건문){실행문}
+  
+```{r}
+j <- 1
+while(j<5){
+  print("남은 시험이 있습니다")
+  j <- j + 1
+}
+```
+
+  
+<실습>
+
+```{r}
+i <- 10
+while(i >= 0){
+
+  if(i > 0){
+    cat("남은 커피는",i,"잔입니다","\n")
+    
+  } else {
+    cat("커피가 없습니다\n")
+    cat("판매를 중지합니다")}
+  i <- i-1  
+}
+```
+
+#### 3. User Defined Function
+
+  + 사용자가 인풋을 입력하여 처리하는 매개변수를 이용하는 함수를 정의해본다
+
+<예> 두수의 덧셈 
+```{r}
+
+f_plus <- function(x, y){
+  
+  adding = x + y
+  return(adding)
+}
+f_plus(3,5)
+```
+
+<실습 : 아래의 형태로 구구단(2~9단)을 출력하는 함수를 정의해보세요.> 
+
+** 2단 **
+2 * 1 = 2
+2 * 2 = 4
+  ...
+  
+** 9단 **
+9 * 8 = 72
+9 * 9 = 81
+
+```{r}
+gugudan <- function(i){
+  
+  for( x in 2:i){
+    cat("**", x, "단", "**", '\n')
+    for( y in 1:9){
+      cat(x, '*', y, '=', x*y, '\n')
+    }
+    
+  }
+  
+}
+
+gugudan(9)
+gugudan(5)
+```
+
+<실습 : 결측치 평균으로 대체하는 함수 정의>
+(data <- c(10,20,5,4,40,7,NA,6,3,NA,2,NA))
+
+```{r}
+data <- c(10,20,5,4,40,7,NA,6,3,NA,2,NA)
+
+mean(data, na.rm=T)
+sum(data)
+!is.na(data)
+
+handling_na <- function(x){
+  
+  m = round(mean(x, na.rm = TRUE),2)
+  data2 <- ifelse(!is.na(x),x,m)
+  print(data2)
+}
+
+handling_na(data)
+
+```
+
+<실습 : 몬테카를로 시뮬레이션>
+  
+    몬테카를로 시뮬레이션은 현실적으로 불가능한 문제의 해답을 얻기 위해서 난수의
+  
+    확률분포를 이용하여 모의시험으로 근사적 해를 구하는 기법
+
+  + 난수 발생 : runif()
+  
+```{r}
+test <- runif(10)
+test
+
+test1 <- runif(10, min=1, max=5)
+test1
+
+```
+
+  + 0~1 사이 난수 발생시켜 0.5이하는 앞면(0), 초과는 뒷면(1)으로 지정 : for문 사용
+  
+```{r}
+r <- runif(10)
+result <- numeric()
+for (i in 1:10) {
+    if(r[i] <= 0.5){
+      result[i] <- 0   # 앞면
+    }else{
+      result[i] <- 1   # 뒷면
+    } #if
+    
+  } #for
+result
+```
+
+  + function()으로 만듦
+    
+```{r}
+# 몬테카를로 시뮬레이션
+# 동전의 앞면과 뒷면의 난수 확률분포 함수 정의
+# 난수 0.5 미만(0~0.5미만) : 앞면 / 그렇지 않으면 뒷면
+
+coin <- function(n){
+  r <- runif(n, min=0, max=1)
+  result <- numeric()
+  
+  for (i in 1:n) {
+    if(r[i] <= 0.5){
+      result[i] <- 0   # 앞면
+    }else{
+      result[i] <- 1   # 뒷면
+    } #if
+    
+  } #for
+  return(result)
+} #function
+print(coin(10))  # 괄호가 먼저 닫히는게 먼저 수행된다. 호출은 print가 먼저되지만!
+
+
+```
+
+  + 뒷면(1)의 개수를 세는 함수를 만들어 동전던지기의 시행에 따른 확률을 살펴본다
+  
+```{r}
+montacoin <- function(n){
+  cnt <- 0
+  for (i in 1:n) {
+    cnt <- cnt + coin(1) #난수를 1개만 발생
+    }
+    result <- cnt/n
+    return(result)
+}
+print(montacoin(10))
+montacoin(100)
+montacoin(100000)
+montacoin(1000000)
+```
+
+<<연습>>
+
+1. 다음 조건에 맞게 client 데이터프레임을 생성하고 데이터를 처리해보세요
+
+  + name : '유관순','홍길동','이순신','신사임당'
+  
+  + gender : 'F','M','M','F'
+  
+  + price : 50,65,45,75
+  
+  + 조건1 : 3개의 벡터 객체를 이용하여 client 데이터 프레임 생성
+  
+  + 조건2 : price 변수의 값이 65만원 이상이면, 문자열 'Best', 65만원 미만이면 'Normal'을 result 컬럼에 추가
+  
+  + result를 대상으로 빈도수 구하기
+  
+
+2. 다음 벡터 EMP는 '입사년도이름급여' 순으로 사원의 정보가 기록된 데이터이다.
+  벡터 EMP를 이용하여 다음과 같은 결과가 나타나도록 함수를 정의해보세요
+  (함수에 변수 EMP를 전달했을 때 출력결과와 같도록 만드시면 됩니다)
+  
+  + EMP <- c('2014홍길동220','2002이순신300','2010유관순260', '1000왕건500', '2019동방신기1000')
+  
+  <출력결과>
+  전체 급여 평균 : 456
+  평균이상 급여 수령자
+  왕건 => 500
+  동방신기 => 100
+
+
+3. 함수 y = f(x)에서 x의 값이 a에서 b까지 변할 때 △x = b - a를 증분이라 하며,
+   △y = f(b) - f(a)를 y의 증분으로 표현한다. 
+   평균변화율 : △y/△x = (f(b)- f(a))/(b - a) 
+   
+   조건) 함수 f(x) = x^3 + 4에서 x의 값이 1에서 3까지 변할 때 평균변화율을
+   구하는 함수를 작성해보세요. (평균변화율 = (f(3)-f(1))/(3-1) = 13)
+   
+
+**Answer**
+
+Q1)
+
+```{r}
+# 벡터 생성
+
+name <- c("유관순","홍길동","이순신","신사임당")
+gender <- c("F","M","M","F")
+price <- c(50,65,45,75)
+
+# 데이터 프레임 생성
+client <- data.frame(NAME=name,GENDER=gender,PRICE=price)
+client
+
+# 조건2 처리
+result <- ifelse(client$PRICE>=65,"Best","Normal")
+result
+
+# 조건3
+table(result)
+```
+
+Q2)
+
+```{r}
+# 1. EMP 벡터 생성
+# 2. 정규표현식으로 이름 및 월급 추출
+# 3. 이름 및 샐러리로 데이터 프레임 생성
+# 4. 출력 함수
+# 5. for() 이용 전체 직원 출력
+
+
+
+
+
+
+# 벡터 생성
+EMP <- c("2014홍길동220","2002이순신300","2010유관순260")
+EMP <- c("2014홍길동220","2002이순신300","2010유관순260","2019왕건750","2019동방신기1200")
+
+## 이름과 급여만 추출한 데이터프레임 만드는 함수
+
+# 정규표현식
+library(stringr)
+
+EMP1 <- str_extract_all(EMP,"[가-히]{2,}[0-9]{3,}")
+EMP1
+
+# 정규표현식으로 이름 및 월급 추출
+name <- str_extract_all(EMP1,"[가-히]{3}")
+name <- unlist(name)
+name
+sal <- str_extract_all(EMP1,"[0-9]{3}")
+sal <- unlist(sal)
+sal
+
+# 데이터프레임 생성
+EMP0 <- data.frame(name, sal, stringsAsFactors = FALSE)
+EMP0
+str(EMP0$sal)
+EMP0$sal <- as.numeric(EMP0$sal)
+
+cat('전체 급여 평균:', mean(EMP0$sal))
+
+cat('평균 이상 급여 수령자','\n')
+
+# 
+
+for(i in 1:length(EMP0$sal)){
+  if(EMP0$sal[i] >= mean(EMP0$sal)){
+    cat(EMP0$name[i],'=>',EMP0$sal[i],'\n')
+  }
+}
+
+EMP_df <- function(x){
+  library(stringr)
+  EMP1 <- str_extract_all(x,"[가-히]{1,}[0-9]{1,}")
+  name <- str_extract_all(EMP1,"[가-힣]{1,}")
+  name <- unlist(name)
+  sal <- str_extract_all(EMP1,"[0-9]{1,}")
+  sal <- unlist(sal)
+  EMP0 <- data.frame(name, sal, stringsAsFactors = FALSE)
+  EMP0$sal <- as.numeric(EMP0$sal)
+  
+  cat('전체 급여 평균:', mean(EMP0$sal),'\n')
+  cat('평균 이상 급여 수령자','\n')
+
+  for(i in 1:length(EMP0$sal)){
+  if(EMP0$sal[i] >= mean(EMP0$sal)){
+    cat(EMP0$name[i],'=>',EMP0$sal[i],'\n')
+    }
+  }
+}
+
+EMP_df(EMP)
+
+EMP <- c("2014홍길동220","2002이순신300","2010유관순260","2019왕건750","2019동방신기1200")
+EMP_df(EMP)
+
+library(stringr)
+stringr::
+```
+
+Q3)
+
+```{r}
+f <- function(x){
+  x <- x^3+4
+}
+
+mrc <- function(a,b){
+  result <- (f(b)-f(a))/(b - a)
+  print(paste('평균변화율=',result))
+}
+
+mrc(1,3)
+```
+
+
+
+
+
+
+#### 4. 주요 내장함수
+
+함수 | 의미 | 함수 | 의미
+----|----|----|----
+min() | 최소값 | max() | 최대값
+mean() | 평균값 | median() | 중앙값
+range() | 벡터의 범위 | sum() | 벡터 합계
+order() | 정렬 | order() | 벡터 정렬 색인
+summary() | 기초통계량 | table() | 빈도 테이블
